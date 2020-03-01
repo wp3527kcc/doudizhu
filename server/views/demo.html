@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<style>
+		body{
+		margin:0;
+		}
+		</style>
+	</head>
+	<body>
+	<script src='../public/js/socket.io.js'></script>
+		<script>
+		window.onload = function () {
+		io.connect('ws://localhost:3000')
+		}
+		</script>
+		<canvas></canvas>
+	</body>
+</html>

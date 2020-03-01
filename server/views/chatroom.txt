@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+  #main{
+  display:none;
+  }
+  </style>
+  <script src='../public/js/socket.io.js'></script>
+  <script src='../public/js/$.js'></script>
+<script type ='text/javascript'>
+const gE = id => document.getElementById(id)
+window.onload = () => {
+	let login = gE('login'),main = gE('main'),nick = gE('nick'),password = gE('password'),submit = gE('submit'),content = gE('content'),btn = gE('btn'),self_nick;
+	document.getElementById('submit').onclick = () => {
+	$.ajax({url:'/login',method:'post',data:{'nick':nick.value,'password':password.value}})
+	.then(({status,str}) => {//0 昵称或密码长度不符合要求 1 密码错误 2 登陆成功 3 新注册 4注册失败
+	switch(status){
+	case 0: alert('昵称或密码长度不符合要求');break;
+	case 1: alert('密码错误');break;
+	case 2: alert('登陆成功');login.style.display='none';main.style.display='block';self_nick=nick.value;break;
+	case 3: alert('新注册');login.style.display='none';main.style.display='block';self_nick=nick.value;break;
+	case 4: alert('注册失败');break;
+	}
+	})
+	}
+	let socket = io.connect('/')
+	socket.on('message',({nick,content}) => {
+	console.log(nick,content)
+	let node = document.createElement('div')
+	node.innerText = nick+'说:'+content
+	if(nick===self_nick)
+		node.style.color = 'red'
+	document.body.appendChild(node)
+	})
+	socket.on('shuffle',(r) => {
+		let sid = socket.id
+		console.log(sid)
+		if(Reflect.has(r,sid))
+		document.write(r[sid])
+		
+	})
+	btn.onclick = e => {
+	socket.send({content:content.value,nick:nick.value})
+	}
+	const getCookie = (cookie) => {
+	let arr = cookie.split(';')
+	let obj = {}
+	arr.forEach( each => {
+		let arr = each.split('=')
+		obj[arr[0]] = arr[1]
+	})
+	return obj
+}
+}
+</script>
+</head>
+<body>
+  <div>
+  
+      <div id='login'>
+        <label for="nick">你的大名</label>
+        <input id='nick' placeholder="请填写入你的昵称">
+		<br/>
+		<label for="password">你的密码</label>
+		<input type='password' id='password' placeholder="请填写你的密码">
+		<br/>
+		<button id='submit'>登陆</button>
+      </div>
+	  
+      <div id='main'>
+        <label for="textarea_messa$">留言内容</label>
+		<input id='content'minlength="5" maxlength="40"/>
+		<br/>
+      <button id='btn'>发表</button>
+      </div>
+	  
+  </div>
+</body>
+</html>

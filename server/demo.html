@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./fun.js"></script>
+    <script>
+        window.onload = function () {
+            let one = document.getElementById('one')
+            let two = document.getElementById('two')
+            let submit = document.getElementById('submit')
+            submit.onclick = function () {
+                let c1 = one.value.split(',').map(each => each = parseInt(each))
+                let c2 = two.value.split(',').map(each => each = parseInt(each))
+                console.log(judge(c1), judge(c2))
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <input type="text" id='one'>
+    <input type="text" id='two'>
+    <button id='submit'>submit</button>
+</body>
+
+</html>
