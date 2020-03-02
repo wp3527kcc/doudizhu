@@ -28,3 +28,12 @@ LENGTH==20 AAABBBCCCDDDEEFFGGHH AABBCCDDEEFFGGHHIIJJ
 炸弹 4 4+2 4+4
 1+1+8+12+8+3+2=35
 36
+
+000 restart
+001 给1 无下一轮
+010
+100
+011 排除0 继续下一轮 => flag给1
+101 排除0 继续下一轮 => flag给0
+110 排除0 继续下一轮 => flag给0
+111 继续下一轮 => 

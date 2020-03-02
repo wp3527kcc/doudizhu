@@ -1,0 +1,13 @@
+{
+     // 显示空格及控制字符
+     "editor.renderControlCharacters": true, 
+     "editor.renderWhitespace": "all",
+     // 修改tab为2个space
+     "editor.tabSize": 2,
+     // 限制列数为120 会绘制一根限制线
+     "editor.rulers": [
+         120
+    ],
+    "git.ignoreLimitWarning": true,
+ 
+}

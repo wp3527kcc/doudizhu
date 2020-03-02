@@ -106,13 +106,13 @@
           <button @click="chupai" :class="{dark:!permit}">出牌</button>
           <button @click="passpoker" v-show="flag_pass">不出</button>
         </div>
-        <div class="butArea" v-show="flag2">
-          <button>抢地主</button>
-          <button>不抢</button>
-        </div>
         <div class="butArea" v-if="false">
-          <button>叫地主</button>
-          <button>不叫</button>
+          <button @click="emit(true)">叫地主</button>
+          <button @click="emit(false)">不叫</button>
+        </div>
+        <div class="butArea" v-show="false">
+          <button @click="emit(true)">抢地主</button>
+          <button @click="emit(false)">不抢</button>
         </div>
         <div class="butArea" v-if="false">
           <button>准备</button>
@@ -156,7 +156,6 @@ export default {
       bottom: [],
       flag: false,
       flag1: true,
-      flag_pass: true,
       flag2: false,
       permit: true,
       inputcontent: "",
@@ -168,6 +167,9 @@ export default {
     ...mapState(["RoomMsg", "current_roomid", "current_nick", "Chat_Record"]),
     basedelta: function() {
       return (600 - (this.bottom.poker.length * 30 - 30 + 92)) / 2;
+    },
+    flag_pass:function(){
+      return this.standby.length
     }
   },
   mounted() {},
@@ -203,7 +205,14 @@ export default {
         this.right.standby = this.getObj(this.right.standby)
         this.bottom.standby = this.getObj(this.bottom.standby)
         this.bottom.poker = this.getObj(this.bottom.poker)
-        this.bottom.flag && (this.standby = this.left.standby || this.right.standby)
+        if(this.bottom.flag){
+          if(this.left.standby.length)
+            this.standby = this.left.standby
+          else if(this.right.standby.length)
+            this.standby = this.right.standby
+          else
+            this.standby = []
+        }
         this.flag = true
       } else 
         this.flag = false
@@ -247,14 +256,17 @@ export default {
       });
       this.bottomstandby = result;
       indexs.reverse().forEach(each => this.bottom.poker.splice(each, 1));
-      this.$socket.emit("renewRoomMsg", {
+      this.$socket.emit("chupai", {
         content: this.bottom.poker.map(each => each.poker),
         change: result.map(each => each.poker)
       });
       this.permit = true;
     },
     passpoker() {
-        this.$socket.emit('renewRoomMsg',{})
+        this.$socket.emit('chupai',{})
+    },
+    emit(flag){
+        this.$socket.emit('jiaodizhu',{flag})
     },
     getPosition(num) {
       const row = num % 4 === 0 ? 3 : (num % 4) - 1;
