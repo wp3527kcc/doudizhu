@@ -25,6 +25,7 @@
               {{left.score}}
             </div>
           </div>
+          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if='left.king'/>
         </div>
         <div id="leftstandby" class="standby">
           <div v-for="(each,index) in left.standby" :key="index">
@@ -53,6 +54,7 @@
             </div>
           </div>
           <img :src="'http://localhost:3000//public//img//'+ right.nick +'.jpg'" class="Avatar" />
+          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if='right.king' style='left:100%;transform:translateX(-100%)' />
         </div>
         <div id="rightstandby" class="standby">
           <div v-for="(each,index) in right.standby" :key="index">
@@ -83,7 +85,7 @@
               {{this.bottom.score}}
             </div>
           </div>
-          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" />
+          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if='bottom.king'/>
         </div>
         <div id="bottomstandby" class="standby">
           <div v-for="(each,index) in bottom.standby" :key="index">
@@ -102,15 +104,15 @@
             :style="{backgroundPosition:`${-10-105.5*(each.column)}px ${-10-28*5*each.row}px`,left:`${basedelta+index*30}px`}"
           ></div>
         </div>
-        <div class="butArea" v-show="bottom.flag">
+        <div class="butArea" v-show="bottom.flag && round==2">
           <button @click="chupai" :class="{dark:!permit}">出牌</button>
           <button @click="passpoker" v-show="flag_pass">不出</button>
         </div>
-        <div class="butArea" v-if="false">
+        <div class="butArea" v-if="bottom.flag && round == 0">
           <button @click="emit(true)">叫地主</button>
           <button @click="emit(false)">不叫</button>
         </div>
-        <div class="butArea" v-show="false">
+        <div class="butArea" v-show="bottom.flag && round==1">
           <button @click="emit(true)">抢地主</button>
           <button @click="emit(false)">不抢</button>
         </div>
@@ -160,7 +162,8 @@ export default {
       permit: true,
       inputcontent: "",
       countdown: 30,
-      standby:[]
+      standby:[],
+      round:Number,
     };
   },
   computed: {
@@ -170,7 +173,7 @@ export default {
     },
     flag_pass:function(){
       return this.standby.length
-    }
+    }//round 0 1 2
   },
   mounted() {},
   watch: {
@@ -178,7 +181,9 @@ export default {
       let re = newValue.filter(each => each.roomid == this.current_roomid)[0];
       this.Percount = re.member.length;
       if (re.lastPoker !== undefined && this.Percount == 3) {
-        this.toppoker = this.getObj(re.lastPoker);
+        let {flag, jiaodizhu, lastPoker, round} = re;
+        this.round = round
+        this.toppoker = this.getObj(lastPoker);
         let i, result, left = this.left, right = this.right, bottom = this.bottom
         re.member.forEach((each, index) => {
           if (each.nick == this.current_nick) {
@@ -266,6 +271,7 @@ export default {
         this.$socket.emit('chupai',{})
     },
     emit(flag){
+      // console.log(flag)
         this.$socket.emit('jiaodizhu',{flag})
     },
     getPosition(num) {
