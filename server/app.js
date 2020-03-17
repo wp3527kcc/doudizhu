@@ -94,6 +94,7 @@ function innershuffle(result) {
 	result.lastPoker = pokers[3]
 	result.flag = i
 	result.round = 0
+	result.overflag = false
 	result.jiaodizhu = [
 		[],
 		[]
@@ -185,11 +186,9 @@ io.on('connection', (socket) => {
 		content,
 		change
 	}) => {
-		// if(!content.length)
-		// 	gameOver()
 		console.log(content, socket._nick)
 		const room = roommsg.filter(each => each.roomid == roomid)[0]
-		if (!content) //未出牌 pass
+		if (!change) //未出牌 pass
 		{
 			next(room.member)
 			io.sockets.in(roomid).emit('renew', {
@@ -206,6 +205,39 @@ io.on('connection', (socket) => {
 		io.sockets.in(roomid).emit('renew', {
 			roommsg
 		})
+		if (!content.length && change.length) {
+			const dizhu = room.member.filter(each => each.king)[0]
+			const nongmings = room.member.filter(each => !each.king)
+			let v = room.baseValue, win;
+			if (result.king)  //地主胜利
+				win = 1
+				
+			else //农民胜利
+				win = -1
+
+			v *= win
+			const prep = [db(`update user set score=score+${v*2} where nick='${dizhu.nick}'`),
+				db(`update user set score=score+${-v} where nick='${nongmings[0].nick}'`),
+				db(`update user set score=score+${-v} where nick='${nongmings[1].nick}'`)
+			]
+			Promise.all(prep)
+
+			db(`select score from user where nick='${dizhu.nick}' or nick='${nongmings[0].nick}' or nick='${nongmings[1].nick}'`)
+			.then((result,err) => {
+				const r = [
+					{nick:dizhu.nick,score:result[0].score,delta:2*v},
+					{nick:nongmings[0].nick,score:result[1].score,delta:-v},
+					{nick:nongmings[1].nick,score:result[2].score,delta:-v}]
+				room.overflag = true
+				io.sockets.in(roomid).emit('gameover', {
+					result:r
+				})
+				io.sockets.in(roomid).emit('renew', {
+					roommsg
+				})
+			})
+
+		}
 	})
 	socket.on('jiaodizhu', ({
 		flag
@@ -313,6 +345,7 @@ io.on('connection', (socket) => {
 					num = index
 			})
 			result.member.splice(num, 1)
+			result.round = 0
 			io.emit('renew', {
 				roommsg
 			})

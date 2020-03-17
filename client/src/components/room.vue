@@ -4,7 +4,7 @@
       <mt-button type="danger" size="normal" class="mtb" @click="back">返回</mt-button>
 
       <div class="kuai" id="top">
-        <div v-for="(each,index) in toppoker" :key="index">
+        <div v-for="(each,index) in showtop" :key="index">
           <div
             class="poker smallpoker"
             :style="{backgroundPosition:`${(-10-105.5*each.column)/2}px ${(-10-28*5*each.row)/2}px`,left:`${index*50}px`}"
@@ -13,7 +13,7 @@
       </div>
       <div class="kuai left-player" id="left">
         <div class="usermsg leftuser">
-          <naozhong :num="countdown" id="leftcountdown" :visible="left.flag"/>
+          <naozhong :num="countdown" id="leftcountdown" :visible="left.flag" />
           <img :src="'http://localhost:3000//public//img//'+ left.nick +'.jpg'" class="Avatar" />
           <div class="msgright">
             <div class="nick">
@@ -25,7 +25,7 @@
               {{left.score}}
             </div>
           </div>
-          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if='left.king'/>
+          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if="left.king" />
         </div>
         <div id="leftstandby" class="standby">
           <div v-for="(each,index) in left.standby" :key="index">
@@ -42,7 +42,7 @@
       </div>
       <div class="kuai right-player" id="right">
         <div class="usermsg rightuser">
-          <naozhong :num="countdown" id="rightcountdown" :visible="right.flag"/>
+          <naozhong :num="countdown" id="rightcountdown" :visible="right.flag" />
           <div class="msgright">
             <div class="nick">
               <b>nick:</b>
@@ -54,7 +54,14 @@
             </div>
           </div>
           <img :src="'http://localhost:3000//public//img//'+ right.nick +'.jpg'" class="Avatar" />
-          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if='right.king' style='left:100%;transform:translateX(-100%)' />
+          <img
+            src="../../static/img/crown.jpg"
+            alt
+            width="40px"
+            class="crown"
+            v-if="right.king"
+            style="left:100%;transform:translateX(-100%)"
+          />
         </div>
         <div id="rightstandby" class="standby">
           <div v-for="(each,index) in right.standby" :key="index">
@@ -85,7 +92,7 @@
               {{this.bottom.score}}
             </div>
           </div>
-          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if='bottom.king'/>
+          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if="bottom.king" />
         </div>
         <div id="bottomstandby" class="standby">
           <div v-for="(each,index) in bottom.standby" :key="index">
@@ -117,8 +124,8 @@
           <button @click="emit(false)">不抢</button>
         </div>
         <div class="butArea" v-if="false">
-          <button>准备</button>
-          <button>取消准备</button>
+          <button @click="prepare(true)">准备</button>
+          <button @click="prepare(false)">取消准备</button>
         </div>
         <div class="butArea" v-if="false">
           <button>再来一局</button>
@@ -135,6 +142,29 @@
         </div>
         <input type="text" id="chatroomInput" v-model="inputcontent" />
         <button id="chatroomCommit" @click="commit">commit</button>
+      </div>
+      <div class="coverLayer" v-if="overflag">
+        <div class="centerArea">
+          <div class="topArea">恭喜你赢了||很遗憾你输了</div>
+          <div class="mainArea">
+                <table border="1" rules='rows' cellpadding='0' cellspacing="0">
+                        <tr>
+                            <th>昵称</th>
+                            <th>本局输赢</th>
+                            <th>总资产</th>
+                        </tr>
+                        <tr v-for="(each,index) in over_msg" :key=index :class="{'red':each.nick == current_nick}">
+                          <td>{{each.nick}}</td>
+                          <td>{{each.delta}}</td>
+                          <td>{{each.score}}</td>
+                        </tr>
+                    </table>
+          </div>
+          <div class="btn">
+            <el-button type='primary' size='mini' @click="refresh">继续游戏</el-button>
+            <el-button type='danger' size='mini' @click="back">返回大厅</el-button>
+          </div>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -157,23 +187,35 @@ export default {
       right: [],
       bottom: [],
       flag: false,
-      flag1: true,
-      flag2: false,
       permit: true,
       inputcontent: "",
       countdown: 30,
-      standby:[],
-      round:Number,
+      standby: [],
+      overflag:Boolean,
+      round: Number,
     };
   },
   computed: {
-    ...mapState(["RoomMsg", "current_roomid", "current_nick", "Chat_Record"]),
+    ...mapState(["RoomMsg", "current_roomid", "current_nick", "Chat_Record","over_msg"]),
     basedelta: function() {
       return (600 - (this.bottom.poker.length * 30 - 30 + 92)) / 2;
     },
-    flag_pass:function(){
-      return this.standby.length
-    }//round 0 1 2
+    flag_pass: function() {
+      return this.standby.length;
+    }, //round 0 1 2,
+    showtop: function() {
+      if (
+        this.left.king == undefined &&
+        this.right.king == undefined &&
+        this.bottom.king == undefined
+      )
+        return [
+          { column: 2, row: 4 },
+          { column: 2, row: 4 },
+          { column: 2, row: 4 }
+        ];
+      return this.toppoker;
+    }
   },
   mounted() {},
   watch: {
@@ -181,10 +223,15 @@ export default {
       let re = newValue.filter(each => each.roomid == this.current_roomid)[0];
       this.Percount = re.member.length;
       if (re.lastPoker !== undefined && this.Percount == 3) {
-        let {flag, jiaodizhu, lastPoker, round} = re;
-        this.round = round
+        let { flag, jiaodizhu, lastPoker, round, overflag } = re;
+        this.round = round;
+        this.overflag = overflag
         this.toppoker = this.getObj(lastPoker);
-        let i, result, left = this.left, right = this.right, bottom = this.bottom
+        let i,
+          result,
+          left = this.left,
+          right = this.right,
+          bottom = this.bottom;
         re.member.forEach((each, index) => {
           if (each.nick == this.current_nick) {
             i = index;
@@ -206,21 +253,17 @@ export default {
             this.right = re.member[0];
             break;
         }
-        this.left.standby = this.getObj(this.left.standby)
-        this.right.standby = this.getObj(this.right.standby)
-        this.bottom.standby = this.getObj(this.bottom.standby)
-        this.bottom.poker = this.getObj(this.bottom.poker)
-        if(this.bottom.flag){
-          if(this.left.standby.length)
-            this.standby = this.left.standby
-          else if(this.right.standby.length)
-            this.standby = this.right.standby
-          else
-            this.standby = []
+        this.left.standby = this.getObj(this.left.standby);
+        this.right.standby = this.getObj(this.right.standby);
+        this.bottom.standby = this.getObj(this.bottom.standby);
+        this.bottom.poker = this.getObj(this.bottom.poker);
+        if (this.bottom.flag) {
+          if (this.left.standby.length) this.standby = this.left.standby;
+          else if (this.right.standby.length) this.standby = this.right.standby;
+          else this.standby = [];
         }
-        this.flag = true
-      } else 
-        this.flag = false
+        this.flag = true;
+      } else this.flag = false;
     }
   },
   methods: {
@@ -236,7 +279,8 @@ export default {
     pokerclick(index) {
       this.bottom.poker[index].flag = !this.bottom.poker[index].flag;
       const result = compare(
-        this.standby.map(each => each.right),this.bottom.poker.filter(each => each.flag).map(each => each.right)
+        this.standby.map(each => each.right),
+        this.bottom.poker.filter(each => each.flag).map(each => each.right)
       );
       this.permit = result;
     },
@@ -248,13 +292,18 @@ export default {
         result.forEach(each => (each.flag = false));
         return false;
       }
-      if(!compare(this.standby.map(each => each.right),result.map(each => each.right))){
-            Toast("你的选择没有大过对方!")
-            this.permit = true;
-            result.forEach(each => (each.flag = false));
-            return false;
+      if (
+        !compare(
+          this.standby.map(each => each.right),
+          result.map(each => each.right)
+        )
+      ) {
+        Toast("你的选择没有大过对方!");
+        this.permit = true;
+        result.forEach(each => (each.flag = false));
+        return false;
       }
-            
+
       const indexs = [];
       this.bottom.poker.forEach((each, index) => {
         if (each.flag) indexs.push(index);
@@ -268,11 +317,11 @@ export default {
       this.permit = true;
     },
     passpoker() {
-        this.$socket.emit('chupai',{})
+      this.$socket.emit("chupai", {});
     },
-    emit(flag){
+    emit(flag) {
       // console.log(flag)
-        this.$socket.emit('jiaodizhu',{flag})
+      this.$socket.emit("jiaodizhu", { flag });
     },
     getPosition(num) {
       const row = num % 4 === 0 ? 3 : (num % 4) - 1;
@@ -298,6 +347,9 @@ export default {
     commit() {
       this.$socket.emit("chat", { content: this.inputcontent });
       this.inputcontent = "";
+    },
+    prepare(flag) {
+      this.$socket.emit("prepare", { flag });
     }
   },
   components: { naozhong }
@@ -501,5 +553,44 @@ export default {
 #bottomcountdown {
   position: absolute;
   left: 3px;
+}
+.coverlayyer {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1001;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.centerArea {
+  width: 500px;
+  height: 300px;
+  border: 1px red solid;
+  margin: 120px auto;
+  position: relative;
+}
+.centerArea > .topArea {
+  line-height: 50px;
+  border-bottom: 3px #ddd solid;
+  text-align: center;
+}
+.centerArea > .mainArea {
+  background-color: rosybrown;
+  height: 200px;
+  color: black;
+}
+.centerArea > .mainArea table{
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.centerArea > .btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.centerArea > .btn > button {
+  margin: 0 15px;
 }
 </style>

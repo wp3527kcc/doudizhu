@@ -7,23 +7,95 @@
     <title>Document</title>
     <script src="./fun.js"></script>
     <script>
-        window.onload = function () {
-            let one = document.getElementById('one')
-            let two = document.getElementById('two')
-            let submit = document.getElementById('submit')
-            submit.onclick = function () {
-                let c1 = one.value.split(',').map(each => each = parseInt(each))
-                let c2 = two.value.split(',').map(each => each = parseInt(each))
-                console.log(judge(c1), judge(c2))
-            }
-        }
+
     </script>
+    <style>
+        .coverlayyer {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index: 1001;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .centerArea{
+            width: 500px;
+            height: 300px;
+            border: 1px red solid;
+            margin: auto;
+            transform: translateY(50%);
+            position: relative;
+        }
+        .centerArea>.topArea{
+            line-height: 50px;
+            border-bottom: 3px #DDD solid;
+            text-align: center;
+        }
+        .centerArea>.mainArea{
+            background-color: rosybrown;
+            height: 200px;
+        }
+        .centerArea>.mainArea >table{
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+        .centerArea>.btn{
+            position: absolute;
+            bottom: 15px;
+            right: 10px;
+        }
+        .centerArea>.btn>button{
+            margin: 0 15px;
+        }
+    </style>
 </head>
 
 <body>
-    <input type="text" id='one'>
-    <input type="text" id='two'>
-    <button id='submit'>submit</button>
+    <div class="background">
+        <div class="coverlayyer">
+            <div class="centerArea">
+               <div class="topArea">
+                   恭喜你赢了||很遗憾你输了
+               </div>
+               <div class="mainArea">
+                    <table border="1" rules='rows' cellpadding='0' cellspacing="0">
+                        <tr>
+                            <th>nick</th>
+                            <th>score</th>
+                            <th>delta</th>
+                        </tr>
+                        <tr>
+                            <td>719045449</td>
+                            <td>-16</td>
+                            <td>-16</td>
+                        </tr>
+                        <tr>
+                            <td>123</td>
+                            <td>-16</td>
+                            <td>-16</td>
+                        </tr>
+                        <tr>
+                            <td>123</td>
+                            <td>-16</td>
+                            <td>-16</td>
+                        </tr>
+                    </table>
+               </div>
+               <div class="btn">
+                    <button>hello</button>
+                    <button>world</button>
+               </div>
+            </div>
+        </div>
+        <ul>
+            <li>helloworld</li>
+            <li>helloworld</li>
+            <li>helloworld</li>
+            <li>helloworld</li>
+        </ul>
+    </div>
 </body>
 
 </html>

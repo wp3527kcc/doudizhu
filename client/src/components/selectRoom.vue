@@ -22,7 +22,7 @@ import store from '../store'
 export default {
     data(){
         return {
-           roomid:''
+           roomid:'1'
         }
     },
     computed: {

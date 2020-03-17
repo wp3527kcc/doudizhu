@@ -2,7 +2,8 @@ import {
   SETMESSAGE,
   SETROOMMSG,
   RENEWMSG,
-  RENEWCHAT
+  RENEWCHAT,
+  OVERMSG
 }from './mutations_type.js'
 export default {
   [SETMESSAGE]:(state,{roommsg,nick}) => {
@@ -23,6 +24,9 @@ export default {
       const index = state.Chat_Record.length - i
       each.bottom = index * 35 + 10 + 'px'
     })
+  },
+  [OVERMSG]: (state,{result}) => {
+    state.over_msg = result
   }
   // [GET_CONTENT]:(state,result)=>{
   //   state.contentlist = result.content

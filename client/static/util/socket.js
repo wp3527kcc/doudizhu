@@ -26,5 +26,8 @@ export const sockets = {
         },
         chat:({content,nick}) => {
           store.dispatch('appendchat',{content,nick})
+        },
+        gameover:({result}) => {
+          store.dispatch('setovermsg',{result})
         }
       }

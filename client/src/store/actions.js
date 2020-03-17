@@ -4,7 +4,8 @@ import {Toast} from 'mint-ui'
           SETMESSAGE,
           SETROOMMSG,
           RENEWMSG,
-          RENEWCHAT
+          RENEWCHAT,
+          OVERMSG
           }from './mutations_type.js'
 export default {
   login: async({commit},{nick,password,router}) => {
@@ -27,5 +28,8 @@ export default {
   },
   appendchat:({commit},{nick,content}) => {
     commit(RENEWCHAT,{nick,content})
+  },
+  setovermsg:({commit},{result}) => {
+    commit(OVERMSG,{result})
   }
 }
