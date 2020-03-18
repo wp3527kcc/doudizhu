@@ -6,7 +6,7 @@
     <br />
     <input type="password" placeholder="please input your password" v-model="password" />
     <br />
-		  <el-button type="primary" @click="login({nick,password,router})">登陆</el-button>
+    <el-button type="primary" @click="login({nick,password,router})">登陆</el-button>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     return {
       nick: "",
       password: "",
-			router: {}
+      router: {}
     };
   },
   mounted() {
