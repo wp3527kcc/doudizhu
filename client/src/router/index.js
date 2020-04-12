@@ -26,5 +26,6 @@ export default new Router({
       name: 'room',
       component: room
     },
-  ]
+  ],
+  // linkActiveClass: 'mui-active'
 })

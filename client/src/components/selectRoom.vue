@@ -1,6 +1,16 @@
 <template>
     <div class='contain'>
-    <h1>selectRoom</h1>
+    <h2>请选择或创建一个房间以开始游戏</h2>
+    <!-- <div v-if='RoomMsg.length' class="tableContain">
+        <div v-for="(each,index) in RoomMsg" :key='index' @click='comeRoom(each.roomid)'>
+
+        <span class="iconfont icon-ziyuan" style='font-size:140px'></span>
+        <p>{{each.roomid}}号房间</p>
+        <p>{{each.member.length}}/3</p>
+        <p v-if='each.member.length==3'>此房间已满</p>
+        <p v-else>点击进入此房间</p>
+        </div>
+    </div> -->
         <div class="tableContain" v-if='RoomMsg.length'>
             <div class="table" v-for="(each,index) in RoomMsg" :key='index' @click='comeRoom(each.roomid)'>
                 <p>{{each.roomid}}号房间</p>
@@ -45,8 +55,12 @@ export default {
 </script>
 <style lang="scss" scoped> 
     .contain{
-        margin: 20px;
         padding: 5px;
+        background: url(../../static/img/bg1.jpg);
+        background-size: 106%;
+        height: 100vh;
+        width: 100vw;
+        color: blanchedalmond;
         .tableContain{
         display: flex;
         // justify-content: space-around;

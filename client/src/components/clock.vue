@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div class="time" :class="{red:red}" @click="_click" v-if="visible">{{count}}</div>
+  <div v-if="visible">
+    <span class='iconfont icon-clock'></span>
+    <p :class="{red:red}">{{count}}</p>
   </div>
 </template>
 
@@ -21,10 +22,6 @@ export default {
     visible: Boolean
   },
   methods: {
-    _click: function() {
-      this.$emit("over");
-      console.log("click");
-    }
   },
   mounted() {
     this.count = this.num;
@@ -42,19 +39,12 @@ export default {
 };
 </script>
 
-<style>
-.time {
-  position: absolute;
-  background: url(../../static/img/timg.jpg) no-repeat;
-  background-position: 0 0;
-  background-size: 100%;
-  width: 50px;
-  height: 50px;
-  padding-top: 18px;
-  padding-left: 18px;
-  top: -65px;
-}
+<style scoped>
+
 .red {
   color: red;
+}
+.iconfont,p{
+  font-size: 30px;
 }
 </style>

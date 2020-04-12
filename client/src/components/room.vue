@@ -1,100 +1,78 @@
 <template>
   <div>
-    <div v-if="flag">
-      <mt-button type="danger" size="normal" class="mtb" @click="back">返回</mt-button>
-
-      <div class="kuai" id="top">
-        <div v-for="(each,index) in showtop" :key="index">
+    <div v-if="flag" class="rootContain">
+      <header>
+        <button class="topbtn" @click="back">退出游戏</button>
+        <div class="toparea">
+          <div v-for="(each,index) in showtop" :key="index">
+            <div
+              class="poker smallpoker"
+              :style="{backgroundPosition:`${(-10-105.5*each.column)/2}px ${(-10-28*5*each.row)/2}px`}"
+            ></div>
+          </div>
+        </div>
+      </header>
+      <main class="otherplayer">
+        <div class="left">
           <div
-            class="poker smallpoker"
-            :style="{backgroundPosition:`${(-10-105.5*each.column)/2}px ${(-10-28*5*each.row)/2}px`,left:`${index*50}px`}"
-          ></div>
-        </div>
-      </div>
-      <div class="kuai left-player" id="left">
-        <div class="usermsg leftuser">
-          <naozhong :num="countdown" id="leftcountdown" :visible="left.flag" />
-          <img :src="'http://localhost:3000//public//img//'+ left.nick +'.jpg'" class="Avatar" />
-          <div class="msgright">
-            <div class="nick">
-              <b>nick:</b>
-              {{left.nick}}
+            class="poker bigpoker"
+            :style="{backgroundPosition:`${-10-105.5*(2)}px ${-10-28*5*4}px`,left:'40px',bottom: '5px'}"
+          >{{left.poker.length}}</div>
+          <div class="Avatar leftAvatar">
+            <img :src="'http://localhost:3000//public//img//'+ left.nick +'.jpg'" class="face" />
+            <div class="nick">{{left.nick}}</div>
+            <div class="contain">
+              <div class="qian">
+                <span class="iconfont icon-qian"></span>
+                {{left.score}}
+              </div>
+              <span class="iconfont icon-dizhu" v-if="left.king"></span>
             </div>
-            <div class="score">
-              <b>score:</b>
-              {{left.score}}
-            </div>
-          </div>
-          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if="left.king" />
-        </div>
-        <div id="leftstandby" class="standby">
-          <div v-for="(each,index) in left.standby" :key="index">
-            <div
-              class="poker smallpoker"
-              :style="{backgroundPosition:`${(-10-105.5*each.column)/2}px ${(-10-28*5*each.row)/2}px`,left:`${index*15}px`}"
-            ></div>
-          </div>
-        </div>
-        <div
-          class="poker bigpoker"
-          :style="{backgroundPosition:`${-10-105.5*(2)}px ${-10-28*5*4}px`,top:0}"
-        >{{left.poker.length}}</div>
-      </div>
-      <div class="kuai right-player" id="right">
-        <div class="usermsg rightuser">
-          <naozhong :num="countdown" id="rightcountdown" :visible="right.flag" />
-          <div class="msgright">
-            <div class="nick">
-              <b>nick:</b>
-              {{right.nick}}
-            </div>
-            <div class="score">
-              <b>score:</b>
-              {{right.score}}
+            <div class="standby" style="position: relative; left: 120px;top:20px;">
+              <!-- <span class="iconfont icon-clock"></span> -->
+              <clock :num="countdown" id="leftcountdown" :visible="left.flag" />
+              <div v-for="(each,index) in left.standby" :key="index">
+                <div
+                  class="poker smallpoker"
+                  :style="{backgroundPosition:`${(-10-105.5*each.column)/2}px ${(-10-28*5*each.row)/2}px`,left:`${index*15}px`}"
+                ></div>
+              </div>
             </div>
           </div>
-          <img :src="'http://localhost:3000//public//img//'+ right.nick +'.jpg'" class="Avatar" />
-          <img
-            src="../../static/img/crown.jpg"
-            alt
-            width="40px"
-            class="crown"
-            v-if="right.king"
-            style="left:100%;transform:translateX(-100%)"
-          />
         </div>
-        <div id="rightstandby" class="standby">
-          <div v-for="(each,index) in right.standby" :key="index">
-            <div
-              class="poker smallpoker"
-              :style="{backgroundPosition:`${(-10-105.5*each.column)/2}px ${(-10-28*5*each.row)/2}px`,
+        <div class="right">
+          <div
+            class="poker bigpoker"
+            style="background-position: -221px -570px;right: 40px;bottom: 5px;"
+          >{{right.poker.length}}</div>
+          <div class="Avatar rightAvatar">
+            <img :src="'http://localhost:3000//public//img//'+ right.nick +'.jpg'" class="face" />
+            <div class="nick">{{right.nick}}</div>
+            <div class="contain">
+              <div class="qian">
+                <span class="iconfont icon-qian"></span>
+                {{right.score}}
+              </div>
+              <span class="iconfont icon-dizhu" v-if="right.king"></span>
+            </div>
+            <div class="standby" style="position: relative; right: 120px;top:20px;">
+              <!-- <span class="iconfont icon-clock"></span> -->
+              <clock :num="countdown" id="rightcountdown" :visible="right.flag" />
+              <div v-for="(each,index) in right.standby" :key="index">
+                <div
+                  class="poker smallpoker"
+                  :style="{backgroundPosition:`${(-10-105.5*each.column)/2}px ${(-10-28*5*each.row)/2}px`,
                 right:`${(right.standby.length-index)*15}px`}"
-            ></div>
-          </div>
-        </div>
-        <div
-          class="poker bigpoker"
-          :style="{backgroundPosition:`${-10-105.5*(2)}px ${-10-28*5*4}px`,top:0}"
-        >{{right.poker.length}}</div>
-      </div>
-      <div class="bottom-player">
-        <div id="pokers"></div>
-        <div class="usermsg bottomuser">
-          <naozhong :num="countdown" id="bottomcountdown" :visible="bottom.flag"></naozhong>
-          <img :src="'http://localhost:3000//public//img//'+ bottom.nick +'.jpg'" class="Avatar" />
-          <div class="msgright">
-            <div class="nick">
-              <b>nick:</b>
-              {{this.bottom.nick}}
-            </div>
-            <div class="score">
-              <b>score:</b>
-              {{this.bottom.score}}
+                ></div>
+              </div>
             </div>
           </div>
-          <img src="../../static/img/crown.jpg" alt width="40px" class="crown" v-if="bottom.king" />
         </div>
-        <div id="bottomstandby" class="standby">
+      </main>
+      <footer class="player">
+        <div class="standby">
+          <!-- <span class="iconfont icon-clock"></span> -->
+          <clock :num="countdown" id="bottomcountdown" :visible="bottom.flag" />
           <div v-for="(each,index) in bottom.standby" :key="index">
             <div
               class="poker smallpoker"
@@ -103,46 +81,65 @@
             ></div>
           </div>
         </div>
-        <div v-for="(each,index) in bottom.poker" :key="index">
-          <div
-            class="poker bigpoker"
-            :class="{Selected:each.flag}"
-            @click="pokerclick(index)"
-            :style="{backgroundPosition:`${-10-105.5*(each.column)}px ${-10-28*5*each.row}px`,left:`${basedelta+index*30}px`}"
-          ></div>
+        <div class="btn">
+          <div v-show="bottom.flag && round==2">
+            <button @click="chupai" :class="{dark:!permit}">出牌</button>
+            <button @click="passpoker" v-show="flag_pass">不出</button>
+          </div>
+          <div v-if="bottom.flag && round == 0">
+            <button @click="emit(true)">叫地主</button>
+            <button @click="emit(false)">不叫</button>
+          </div>
+          <div v-show="bottom.flag && round==1">
+            <button @click="emit(true)">抢地主</button>
+            <button @click="emit(false)">不抢</button>
+          </div>
         </div>
-        <div class="butArea" v-show="bottom.flag && round==2">
-          <button @click="chupai" :class="{dark:!permit}">出牌</button>
-          <button @click="passpoker" v-show="flag_pass">不出</button>
+        <div class="bg">
+          <div v-for="(each,index) in bottom.poker" :key="index">
+            <div
+              class="poker bigpoker"
+              :class="{Selected:each.flag}"
+              @click="pokerclick(index)"
+              :style="{backgroundPosition:`${-10-105.5*(each.column)}px ${-10-28*5*each.row}px`,left:`${basedelta+index*30}px`}"
+            ></div>
+          </div>
         </div>
-        <div class="butArea" v-if="bottom.flag && round == 0">
-          <button @click="emit(true)">叫地主</button>
-          <button @click="emit(false)">不叫</button>
+        <div class="info">
+          <div class="Avatar bottomAvatar">
+            <img :src="'http://localhost:3000//public//img//'+ bottom.nick +'.jpg'" class="face" />
+            <div class="nick">{{bottom.nick}}</div>
+          </div>
+          <div class="contain">
+            <div class="qian">
+              <span class="iconfont icon-qian"></span>
+              {{bottom.score}}
+            </div>
+            <div class="bei">
+              <span class="iconfont icon-bei"></span>
+              {{baseValue}}
+            </div>
+            <span class="iconfont icon-dizhu" v-if="bottom.flag"></span>
+          </div>
+          <main class="chat">
+            <article ref="chatarea">
+                <div
+                v-for="(each,index) in Chat_Record" :key="index"
+                  :class='each.nick == current_nick?"Mine":"Other"'
+                >{{each.nick+'说：'+each.content}}</div>
+            </article>
+            <footer>
+              <button @click="toggleChat">
+                <span class="iconfont" :class="{'icon-upward':iscollapse,'icon-down':!iscollapse}"></span>
+              </button>
+              <input type="text" v-model="inputcontent" />
+              <button @click="commit">
+                <span class="iconfont icon-fasong"></span>
+              </button>
+            </footer>
+          </main>
         </div>
-        <div class="butArea" v-show="bottom.flag && round==1">
-          <button @click="emit(true)">抢地主</button>
-          <button @click="emit(false)">不抢</button>
-        </div>
-        <div class="butArea" v-if="false">
-          <button @click="prepare(true)">准备</button>
-          <button @click="prepare(false)">取消准备</button>
-        </div>
-        <div class="butArea" v-if="false">
-          <button>再来一局</button>
-          <button>返回大厅</button>
-        </div>
-      </div>
-      <div id="chatroom">
-        <div v-for="(each,index) in Chat_Record" :key="index">
-          <div
-            class="chat"
-            :class='each.nick == current_nick?"Mine":"Other"'
-            :style="{bottom:each.bottom}"
-          >{{each.nick}}说：{{each.content}}</div>
-        </div>
-        <input type="text" id="chatroomInput" v-model="inputcontent" />
-        <button id="chatroomCommit" @click="commit">commit</button>
-      </div>
+      </footer>
       <div class="coverLayer" v-if="overflag">
         <div class="centerArea">
           <div class="topArea">恭喜你赢了||很遗憾你输了</div>
@@ -161,7 +158,7 @@
                     </table>
           </div>
           <div class="btn">
-            <el-button type='primary' size='mini' @click="refresh">继续游戏</el-button>
+            <el-button type='primary' size='mini'>继续游戏</el-button>
             <el-button type='danger' size='mini' @click="back">返回大厅</el-button>
           </div>
         </div>
@@ -176,7 +173,7 @@
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
 import { Toast } from "mint-ui";
-import naozhong from "./naozhong.vue";
+import clock from "./clock.vue";
 import { compare, judgement } from "../../static/util/fun";
 export default {
   data() {
@@ -191,12 +188,20 @@ export default {
       inputcontent: "",
       countdown: 30,
       standby: [],
-      overflag:Boolean,
+      overflag: Boolean,
       round: Number,
+      baseValue: Number,
+      iscollapse: true
     };
   },
   computed: {
-    ...mapState(["RoomMsg", "current_roomid", "current_nick", "Chat_Record","over_msg"]),
+    ...mapState([
+      "RoomMsg",
+      "current_roomid",
+      "current_nick",
+      "Chat_Record",
+      "over_msg"
+    ]),
     basedelta: function() {
       return (600 - (this.bottom.poker.length * 30 - 30 + 92)) / 2;
     },
@@ -223,9 +228,10 @@ export default {
       let re = newValue.filter(each => each.roomid == this.current_roomid)[0];
       this.Percount = re.member.length;
       if (re.lastPoker !== undefined && this.Percount == 3) {
-        let { flag, jiaodizhu, lastPoker, round, overflag } = re;
+        let { flag, jiaodizhu, lastPoker, round, overflag, baseValue } = re;
+        this.baseValue = baseValue;
         this.round = round;
-        this.overflag = overflag
+        this.overflag = overflag;
         this.toppoker = this.getObj(lastPoker);
         let i,
           result,
@@ -344,253 +350,342 @@ export default {
       this.$socket.emit("back");
       this.$router.push("/selectRoom");
     },
-    commit() {
-      this.$socket.emit("chat", { content: this.inputcontent });
+    async commit() {
+      await this.$socket.emit("chat", { content: this.inputcontent });
       this.inputcontent = "";
+      const chatarea = this.$refs.chatarea;
+      chatarea.scrollTop = chatarea.scrollHeight
+    },
+    toggleChat() {
+      this.iscollapse = !this.iscollapse;
+      const chatarea = this.$refs.chatarea;
+      const vi = chatarea.style.visibility
+      console.log(vi)
+      if(vi == 'visible' )
+        {
+          chatarea.style.visibility = 'hidden'
+          chatarea.style.transform = 'translateY(100%)'
+        }
+        else
+        {
+          chatarea.style.visibility = 'visible'
+          chatarea.style.transform = 'translateY(0)'
+        }
     },
     prepare(flag) {
       this.$socket.emit("prepare", { flag });
     }
   },
-  components: { naozhong }
+  components: { clock }
 };
 </script>
-<style scoped>
-.kuai {
-  position: absolute;
-  height: 40px;
-  /* width: 40px; */
-  background: red;
+<style lang='scss' scoped>
+.rootContain {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: url(../../static/img/bg.jpg);
+  background-size: 106%;
+  position: relative;
 }
-#top {
-  left: 50%;
-  transform: translateX(-50%);
+header {
+  height: 15vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+header .topbtn {
+  position: absolute;
+  left: 20px;
   top: 20px;
-  width: 150px;
-  height: 70px;
-  background-color: white;
-}
-.chat {
-  position: absolute;
-  border-radius: 2px;
-  transition: ease 0.7s;
-  padding: 5px;
-  max-width: 180px;
-}
-.Mine {
-  background-color: #8fcc33;
-  right: 5px;
-}
-.Other {
-  background-color: white;
-  left: 5px;
-}
-#chatroom {
-  position: absolute;
-  left: 8px;
-  bottom: 8px;
-  width: 280px;
-  height: 320px;
-  overflow: hidden;
-  border: solid 2px white;
-}
-#chatroomInput {
-  position: absolute;
-  bottom: 5px;
-  width: 80%;
-  margin: 0 5px;
-  left: 0;
-  height: 25px;
-}
-#chatroomCommit {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  background: darkorange;
+  padding: 5px 10px;
+  background: #e74c3c;
+  outline: none;
   border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  border: solid 1px #e74c3c;
+}
+header .btn:hover {
+  cursor: pointer;
+  color: #e74c3c;
+  background: #fff;
+}
+header .toparea {
+  width: 150px;
+  height: 80%;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+header .toparea .smallpoker {
+  position: unset;
+}
+main.otherplayer {
+  flex: 1;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+}
+main.otherplayer > div {
+  height: 100%;
+  width: 25vw;
+  position: relative;
+}
+footer.player {
+  height: 40vh;
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+footer.player div.standby {
+  height: 70px;
+  width: 40%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+footer.player div.btn {
+  width: 140px;
+  height: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+footer.player div.btn button {
+  border-radius: 5px;
+  background: #e67e22;
+  padding: 2px 10px;
+}
+footer.player div.btn button:hover {
+  cursor: pointer;
+  background: #d35400;
+}
+footer.player div.bg {
+  width: 50%;
+  height: 50%;
+  position: relative;
+}
+footer.player div.info {
+  width: 100%;
+  height: 28px;
+  position: relative;
+}
+footer.player div.info div.contain {
+  position: absolute;
+  left: 150px;
+  font-size: 18px !important;
+}
+footer.player div.info div.contain div {
+  float: left;
+  margin-right: 20px;
+}
+footer.player div.info div.contain span {
+  font-size: 20px;
+}
+footer.player div.info main.chat {
+  width: 300px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+footer.player div.info main.chat article {
+  visibility: hidden;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border: silver 2px solid;
+  background: #f2ecf0;
+  transition: 0.5s all ease;
+  align-items: flex-start;
+}
+footer.player div.info main.chat article div {
+  max-width: 280px;
+  margin: 5px;
+  font-size: 12px;
+  border-radius: 3px;
+  padding: 5px;
+  background: #fafafa;
+  word-break: break-word;
+  text-align: left;
+}
+footer.player div.info main.chat article .Mine {
+  background: #9ce459;
+  align-self: flex-end;
+}
+footer.player div.info main.chat footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 25px;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+  background: rgba(189, 195, 199, 0);
+}
+footer.player div.info main.chat footer input {
+  width: 60%;
+  outline: none;
+  border-radius: 3px;
+  border: 1px solid #2c3e50;
+  padding: 5px;
+}
+footer.player div.info main.chat footer button {
+  border-radius: 5px;
+  border: 2px solid #2c3e50;
+  color: #e74c3c;
+  float: left;
+  width: 15%;
+  padding: 0;
+}
+footer.player div.info main.chat footer button:hover {
+  cursor: pointer;
+  background: #f2ecf0;
+  color: black;
 }
 .poker {
   background: url(../../static/img/poker.jpg) no-repeat;
   position: absolute;
-  transition: 0.4s ease all;
+  transition: all 0.6s, background 0s;
   color: pink;
   font-size: 40px;
   text-align: center;
-  line-height: 128px;
+  line-height: 122px;
 }
 .bigpoker {
-  width: 92px;
-  height: 128px;
+  border-radius: 8px;
+  width: 90px;
+  height: 122px;
 }
 .smallpoker {
+  border-radius: 4px;
   width: 46px;
-  height: 64px;
+  height: 63px;
   background-size: 1500%;
 }
-.bottom-player {
+.Selected {
+  transform: translateY(-10px);
+}
+div.Avatar {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+}
+div.Avatar img.face {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 128px;
-  width: 600px;
+  left: 0;
+}
+div.Avatar div.nick {
+  left: 42px;
+  bottom: 0;
+  height: 20px;
   position: absolute;
+  background: rgba(143, 52, 60, 0.8);
+  color: #f0f0f0;
+  border-radius: 10px;
+  transform: translate(-50%);
+  padding: 0 10px;
 }
-.left-player {
-  left: 8px;
-  top: 10%;
+.bottomAvatar {
+  left: 20px;
+  bottom: 0;
+}
+.leftAvatar {
+  top: 20px;
+  left: 40px;
+}
+.leftAvatar > .contain {
   position: absolute;
+  top: 100%;
 }
-.right-player {
-  top: 10%;
+.leftAvatar > .contain > div {
+  float: left;
+  margin: 0 10px;
+  color: white;
+}
+.leftAvatar > .contain span {
+  color: white;
+  font-size: 18px;
+}
+.rightAvatar {
+  top: 20px;
+  right: 40px;
+}
+.rightAvatar > .contain {
   position: absolute;
-  right: 100px;
+  top: 100%;
 }
-.bottomuser {
-  left: 100%;
-  bottom: 30px;
-  transform: translateX(120px);
+.rightAvatar > .contain > div {
+  float: right;
+  margin: 0 10px;
+  color: white;
 }
-.leftuser {
-  left: 5px;
-  top: 130px;
+.rightAvatar > .contain span {
+  color: white;
+  font-size: 18px;
 }
-.rightuser {
-  top: 130px;
-  right: -90px;
+.icon-clock::before {
+  font-size: 40px;
 }
-.usermsg {
-  width: 160px;
-  height: 80px;
-  background-color: cyan;
-  position: absolute;
-  color: black;
-  display: flex;
-  justify-content: space-between;
-  text-align: left;
-}
-.usermsg > .Avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: black 3px solid;
-  flex: 1;
-}
-.usermsg > .msgright {
-  background-color: cyan;
-  flex: 1;
-}
-#leftstandby {
-  width: 480px;
-  height: 70px;
-  position: absolute;
-  top: 50px;
-  left: 130px;
-}
-#rightstandby {
-  width: 480px;
-  height: 70px;
-  position: absolute;
-  left: -520px;
-  top: 50px;
-}
-#bottomstandby {
-  width: 480px;
-  height: 70px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 220px;
-}
-
-.butArea {
-  position: absolute;
-  margin: 10px 25px;
-  left: 50%;
-  transform: translate(-85%, -225%);
-}
-
-.butArea button {
-  height: 30px;
-  width: 50px;
-  background-color: orange;
-  border-radius: 50%;
-}
-
-.butArea button:hover {
-  background-color: #fff;
-}
-
 .dark {
   background-color: gray !important;
 }
-
-.mtb {
+.coverLayer{
   position: absolute;
-  left: 20px;
-  top: 5px;
-  height: 30px;
-}
-
-.Selected {
-  transform: translateY(-30px);
-}
-.crown {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  top: 3px;
-  left: 3px;
-}
-#leftcountdown {
-  position: absolute;
-  left: 115px;
-}
-#rightcountdown {
-  position: absolute;
-  left: 3px;
-}
-#bottomcountdown {
-  position: absolute;
-  left: 3px;
-}
-.coverlayyer {
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
-  position: fixed;
-  z-index: 1001;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.centerArea {
-  width: 500px;
-  height: 300px;
-  border: 1px red solid;
-  margin: 120px auto;
-  position: relative;
-}
-.centerArea > .topArea {
-  line-height: 50px;
-  border-bottom: 3px #ddd solid;
-  text-align: center;
-}
-.centerArea > .mainArea {
-  background-color: rosybrown;
-  height: 200px;
-  color: black;
-}
-.centerArea > .mainArea table{
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
-.centerArea > .btn {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-.centerArea > .btn > button {
-  margin: 0 15px;
+  background: rgba(0,0,0,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    .centerArea {
+    border: 1px red solid;
+    margin: 120px auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    > .topArea {
+      line-height: 50px;
+      border-bottom: 3px #ddd solid;
+      text-align: center;
+    }
+    > .mainArea {
+      background-color: rosybrown;
+      height: 200px;
+      color: black;
+    }
+    > .mainArea table {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+    > .btn {
+      margin: 15px 0;
+      align-self: flex-end;
+      > button {
+        margin: 0 15px;
+      }
+    }
+  }
 }
 </style>
