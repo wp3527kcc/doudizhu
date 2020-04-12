@@ -5,7 +5,7 @@
   "author": "zhongke <719045449@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --port 8080  --progress --config build/webpack.dev.conf.js ",
+    "dev": "webpack-dev-server --inline --disableHostCheck=true --port 8080  --progress --config build/webpack.dev.conf.js ",
     "start": "npm run dev",
     "build": "node build/build.js"
   },

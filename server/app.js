@@ -89,7 +89,8 @@ function innershuffle(result) {
 		Object.assign(each, {
 			poker: pokers[index],
 			standby: [],
-			flag: index == i ? true : false
+			flag: index == i ? true : false,
+			king:false
 		}))
 	result.lastPoker = pokers[3]
 	result.flag = i
@@ -186,7 +187,6 @@ io.on('connection', (socket) => {
 		content,
 		change
 	}) => {
-		console.log(content, socket._nick)
 		const room = roommsg.filter(each => each.roomid == roomid)[0]
 		if (!change) //未出牌 pass
 		{
@@ -208,13 +208,7 @@ io.on('connection', (socket) => {
 		if (!content.length && change.length) {
 			const dizhu = room.member.filter(each => each.king)[0]
 			const nongmings = room.member.filter(each => !each.king)
-			let v = room.baseValue, win;
-			if (result.king)  //地主胜利
-				win = 1
-				
-			else //农民胜利
-				win = -1
-
+			let v = room.baseValue, win = result.king ? 1 : -1;
 			v *= win
 			const prep = [db(`update user set score=score+${v*2} where nick='${dizhu.nick}'`),
 				db(`update user set score=score+${-v} where nick='${nongmings[0].nick}'`),
@@ -232,11 +226,11 @@ io.on('connection', (socket) => {
 				io.sockets.in(roomid).emit('gameover', {
 					result:r
 				})
+				room.member.forEach(each => r.forEach(e => {if(each.nick==e.nick)each.score = e.score}))
 				io.sockets.in(roomid).emit('renew', {
 					roommsg
 				})
 			})
-
 		}
 	})
 	socket.on('jiaodizhu', ({
@@ -290,7 +284,6 @@ io.on('connection', (socket) => {
 					] // 2 1 => 0 => 2
 					let index = re.indexOf(true) //0 1 2
 					index = arr[index]
-					console.log(re, index, room.flag) //2 
 					room.member[index].poker.push(...room.lastPoker)
 					room.member[index].poker.sort(_sort)
 					room.member[index].king = true
