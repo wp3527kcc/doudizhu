@@ -19,7 +19,7 @@
             :style="{backgroundPosition:`${-10-105.5*(2)}px ${-10-28*5*4}px`,left:'40px',bottom: '5px'}"
           >{{left.poker.length}}</div>
           <div class="Avatar leftAvatar">
-            <img :src="'http://localhost:3000//public//img//'+ left.nick +'.jpg'" class="face" />
+            <img :src="'http://localhost:3000//public//img//'+ `${left.Avatarflag?left.nick:'undefined'}` +'.jpg'" class="face" />
             <div class="nick">{{left.nick}}</div>
             <div class="contain">
               <div class="qian">
@@ -29,7 +29,6 @@
               <span class="iconfont icon-dizhu" v-if="left.king"></span>
             </div>
             <div class="standby" style="position: relative; left: 120px;top:20px;">
-              <!-- <span class="iconfont icon-clock"></span> -->
               <clock :num="countdown" id="leftcountdown" :visible="left.flag" />
               <div v-for="(each,index) in left.standby" :key="index">
                 <div
@@ -46,7 +45,7 @@
             style="background-position: -221px -570px;right: 40px;bottom: 5px;"
           >{{right.poker.length}}</div>
           <div class="Avatar rightAvatar">
-            <img :src="'http://localhost:3000//public//img//'+ right.nick +'.jpg'" class="face" />
+             <img :src="'http://localhost:3000//public//img//'+ `${right.Avatarflag?right.nick:'undefined'}` +'.jpg'" class="face" />
             <div class="nick">{{right.nick}}</div>
             <div class="contain">
               <div class="qian">
@@ -56,7 +55,6 @@
               <span class="iconfont icon-dizhu" v-if="right.king"></span>
             </div>
             <div class="standby" style="position: relative; right: 120px;top:20px;">
-              <!-- <span class="iconfont icon-clock"></span> -->
               <clock :num="countdown" id="rightcountdown" :visible="right.flag" />
               <div v-for="(each,index) in right.standby" :key="index">
                 <div
@@ -71,7 +69,6 @@
       </main>
       <footer class="player">
         <div class="standby">
-          <!-- <span class="iconfont icon-clock"></span> -->
           <clock :num="countdown" id="bottomcountdown" :visible="bottom.flag" />
           <div v-for="(each,index) in bottom.standby" :key="index">
             <div
@@ -107,7 +104,7 @@
         </div>
         <div class="info">
           <div class="Avatar bottomAvatar">
-            <img :src="'http://localhost:3000//public//img//'+ bottom.nick +'.jpg'" class="face" />
+             <img :src="'http://localhost:3000//public//img//'+ `${bottom.Avatarflag?bottom.nick:'undefined'}` +'.jpg'" class="face" />
             <div class="nick">{{bottom.nick}}</div>
           </div>
           <div class="contain">
@@ -131,6 +128,7 @@
             <footer>
               <button @click="toggleChat">
                 <span class="iconfont" :class="{'icon-upward':iscollapse,'icon-down':!iscollapse}"></span>
+                <aside>3</aside>
               </button>
               <input type="text" v-model="inputcontent" />
               <button @click="commit">
@@ -175,6 +173,7 @@ import { mapActions, mapMutations, mapState } from "vuex";
 import { Toast } from "mint-ui";
 import clock from "./clock.vue";
 import { compare, judgement } from "../../static/util/fun";
+import { ajax } from '../../static/util/ajax.js'
 export default {
   data() {
     return {
@@ -224,6 +223,9 @@ export default {
   },
   mounted() {},
   watch: {
+    Chat_Record:function(newValue, oldValue){
+      console.log('change')
+    },
     RoomMsg: function(newValue, oldValue) {
       let re = newValue.filter(each => each.roomid == this.current_roomid)[0];
       this.Percount = re.member.length;
@@ -544,6 +546,8 @@ footer.player div.info main.chat footer input {
   border-radius: 3px;
   border: 1px solid #2c3e50;
   padding: 5px;
+  height: 25px;
+  font-size: 18px;
 }
 footer.player div.info main.chat footer button {
   border-radius: 5px;
@@ -552,6 +556,17 @@ footer.player div.info main.chat footer button {
   float: left;
   width: 15%;
   padding: 0;
+  >aside{
+    min-width: 18px;
+    line-height: 18px;
+    border-radius: 9px;
+    padding: 0 5px;
+    background: #e67e22;
+    position: absolute;
+    top: -9px;
+    right: -7px;
+    color: #fff;
+  }
 }
 footer.player div.info main.chat footer button:hover {
   cursor: pointer;

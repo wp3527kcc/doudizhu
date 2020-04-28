@@ -1,0 +1,321 @@
+.rootContain {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: url(../../static/img/bg.jpg);
+  background-size: 106%;
+  position: relative;
+}
+header {
+  height: 15vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+header .topbtn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  padding: 5px 10px;
+  background: #e74c3c;
+  outline: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  border: solid 1px #e74c3c;
+}
+header .btn:hover {
+  cursor: pointer;
+  color: #e74c3c;
+  background: #fff;
+}
+header .toparea {
+  width: 150px;
+  height: 80%;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+header .toparea .smallpoker {
+  position: unset;
+}
+main.otherplayer {
+  flex: 1;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+}
+main.otherplayer > div {
+  height: 100%;
+  width: 25vw;
+  position: relative;
+}
+footer.player {
+  height: 40vh;
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+footer.player div.standby {
+  height: 70px;
+  width: 40%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+footer.player div.btn {
+  width: 140px;
+  height: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+footer.player div.btn button {
+  border-radius: 5px;
+  background: #e67e22;
+  padding: 2px 10px;
+}
+footer.player div.btn button:hover {
+  cursor: pointer;
+  background: #d35400;
+}
+footer.player div.bg {
+  width: 50%;
+  height: 50%;
+  position: relative;
+}
+footer.player div.info {
+  width: 100%;
+  height: 28px;
+  position: relative;
+}
+footer.player div.info div.contain {
+  position: absolute;
+  left: 150px;
+  font-size: 18px !important;
+}
+footer.player div.info div.contain div {
+  float: left;
+  margin-right: 20px;
+}
+footer.player div.info div.contain span {
+  font-size: 20px;
+}
+footer.player div.info main.chat {
+  width: 300px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+footer.player div.info main.chat article {
+  visibility: hidden;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border: silver 2px solid;
+  background: #f2ecf0;
+  transition: 0.5s all ease;
+  align-items: flex-start;
+}
+footer.player div.info main.chat article div {
+  max-width: 280px;
+  margin: 5px;
+  font-size: 12px;
+  border-radius: 3px;
+  padding: 5px;
+  background: #fafafa;
+  word-break: break-word;
+  text-align: left;
+}
+footer.player div.info main.chat article .Mine {
+  background: #9ce459;
+  align-self: flex-end;
+}
+footer.player div.info main.chat footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+  background: rgba(189, 195, 199, 0);
+}
+footer.player div.info main.chat footer input {
+  width: 60%;
+  outline: none;
+  border-radius: 3px;
+  border: 1px solid #2c3e50;
+  padding: 5px;
+  height: 25px;
+  font-size: 18px;
+}
+footer.player div.info main.chat footer button {
+  border-radius: 5px;
+  border: 2px solid #2c3e50;
+  color: #e74c3c;
+  float: left;
+  width: 15%;
+  padding: 0;
+}
+footer.player div.info main.chat footer button > aside {
+  min-width: 18px;
+  line-height: 18px;
+  border-radius: 9px;
+  padding: 0 5px;
+  background: #e67e22;
+  position: absolute;
+  top: -9px;
+  right: -7px;
+  color: #fff;
+}
+footer.player div.info main.chat footer button:hover {
+  cursor: pointer;
+  background: #f2ecf0;
+  color: black;
+}
+.poker {
+  background: url(../../static/img/poker.jpg) no-repeat;
+  position: absolute;
+  transition: all 0.6s, background 0s;
+  color: pink;
+  font-size: 40px;
+  text-align: center;
+  line-height: 122px;
+}
+.bigpoker {
+  border-radius: 8px;
+  width: 90px;
+  height: 122px;
+}
+.smallpoker {
+  border-radius: 4px;
+  width: 46px;
+  height: 63px;
+  background-size: 1500%;
+}
+.Selected {
+  transform: translateY(-10px);
+}
+div.Avatar {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+}
+div.Avatar img.face {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+div.Avatar div.nick {
+  left: 42px;
+  bottom: 0;
+  height: 20px;
+  position: absolute;
+  background: rgba(143, 52, 60, 0.8);
+  color: #f0f0f0;
+  border-radius: 10px;
+  transform: translate(-50%);
+  padding: 0 10px;
+}
+.bottomAvatar {
+  left: 20px;
+  bottom: 0;
+}
+.leftAvatar {
+  top: 20px;
+  left: 40px;
+}
+.leftAvatar > .contain {
+  position: absolute;
+  top: 100%;
+}
+.leftAvatar > .contain > div {
+  float: left;
+  margin: 0 10px;
+  color: white;
+}
+.leftAvatar > .contain span {
+  color: white;
+  font-size: 18px;
+}
+.rightAvatar {
+  top: 20px;
+  right: 40px;
+}
+.rightAvatar > .contain {
+  position: absolute;
+  top: 100%;
+}
+.rightAvatar > .contain > div {
+  float: right;
+  margin: 0 10px;
+  color: white;
+}
+.rightAvatar > .contain span {
+  color: white;
+  font-size: 18px;
+}
+.icon-clock::before {
+  font-size: 40px;
+}
+.dark {
+  background-color: gray !important;
+}
+.coverLayer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coverLayer .centerArea {
+  border: 1px red solid;
+  margin: 120px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+.coverLayer .centerArea > .topArea {
+  line-height: 50px;
+  border-bottom: 3px #ddd solid;
+  text-align: center;
+}
+.coverLayer .centerArea > .mainArea {
+  background-color: rosybrown;
+  height: 200px;
+  color: black;
+}
+.coverLayer .centerArea > .mainArea table {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.coverLayer .centerArea > .btn {
+  margin: 15px 0;
+  align-self: flex-end;
+}
+.coverLayer .centerArea > .btn > button {
+  margin: 0 15px;
+}

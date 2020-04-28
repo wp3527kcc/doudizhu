@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bodyParser = require('body-parser')
+const fs = require('fs')
 const urlencodedParser = bodyParser.urlencoded({
 	extended: false
 })
@@ -42,13 +43,6 @@ router
 		if (length) {
 			const result = await db(`select * from user where nick='${nick}' and password='${password}'`) //已存在昵称，验证密码
 			if (result.length > 0) {
-				// if(!result[0]['islogin'])
-				// 	{
-				// 		await db('update user set islogin=true where nick='+nick)
-				// 	  res.send({status:2,message:'登陆成功',roommsg})
-				// 	}
-				// else
-				// 	  res.send({status:5,message:'重复登陆'})
 				res.send({
 					status: 2,
 					message: '登陆成功',
@@ -68,7 +62,7 @@ router
 					status: 3,
 					message: '新注册',
 					roommsg
-				}) //Date.now()
+				})
 			else
 				res.send({
 					status: 4,
@@ -76,7 +70,6 @@ router
 				})
 		}
 	})
-
 app.use(router)
 let server = http.createServer(app)
 let io = ws(server)
@@ -90,16 +83,16 @@ function innershuffle(result) {
 			poker: pokers[index],
 			standby: [],
 			flag: index == i ? true : false,
-			king:false
+			king: false
 		}))
-	result.lastPoker = pokers[3]
-	result.flag = i
-	result.round = 0
-	result.overflag = false
-	result.jiaodizhu = [
-		[],
-		[]
-	]
+		result.lastPoker = pokers[3]
+		result.flag = i
+		result.round = 0
+		result.overflag = false
+		result.jiaodizhu = [
+			[],
+			[]
+		]
 	result.jiaodizhu[0].length = 3
 	result.jiaodizhu[1].length = 3
 }
@@ -117,9 +110,19 @@ io.on('connection', (socket) => {
 			roomid = id
 			socket.join(roomid)
 			const score = await db(`select score from user where nick='${socket._nick}'`)
+			const exists = (url) => {
+				return new Promise((resolve,reject) => {
+					fs.exists(url,(flag,err) => {
+						if(err) reject(err)
+						resolve(flag)
+					})
+				})
+			}
+			const Avatarflag = await exists(`public/img/${socket._nick}.jpg`)
 			result[0].member.push({
 				nick: socket._nick,
-				score: score[0].score
+				score: score[0].score,
+				Avatarflag
 			}) //[roomid:'dasf',member:[{nick,poker}],lastpoker:]
 			if (result[0].member.length == 3)
 				innershuffle(result[0])
@@ -130,8 +133,6 @@ io.on('connection', (socket) => {
 				id,
 				roommsg
 			})
-			// io.sockets.in(roomid).emit('renew',{roommsg})
-			// io.sockets.in(init_room).emit('renew',{roommsg})
 			io.emit('renew', {
 				roommsg
 			})
@@ -208,7 +209,8 @@ io.on('connection', (socket) => {
 		if (!content.length && change.length) {
 			const dizhu = room.member.filter(each => each.king)[0]
 			const nongmings = room.member.filter(each => !each.king)
-			let v = room.baseValue, win = result.king ? 1 : -1;
+			let v = room.baseValue,
+				win = result.king ? 1 : -1;
 			v *= win
 			const prep = [db(`update user set score=score+${v*2} where nick='${dizhu.nick}'`),
 				db(`update user set score=score+${-v} where nick='${nongmings[0].nick}'`),
@@ -217,20 +219,34 @@ io.on('connection', (socket) => {
 			Promise.all(prep)
 
 			db(`select score from user where nick='${dizhu.nick}' or nick='${nongmings[0].nick}' or nick='${nongmings[1].nick}'`)
-			.then((result,err) => {
-				const r = [
-					{nick:dizhu.nick,score:result[0].score,delta:2*v},
-					{nick:nongmings[0].nick,score:result[1].score,delta:-v},
-					{nick:nongmings[1].nick,score:result[2].score,delta:-v}]
-				room.overflag = true
-				io.sockets.in(roomid).emit('gameover', {
-					result:r
+				.then((result, err) => {
+					const r = [{
+							nick: dizhu.nick,
+							score: result[0].score,
+							delta: 2 * v
+						},
+						{
+							nick: nongmings[0].nick,
+							score: result[1].score,
+							delta: -v
+						},
+						{
+							nick: nongmings[1].nick,
+							score: result[2].score,
+							delta: -v
+						}
+					]
+					room.overflag = true
+					io.sockets.in(roomid).emit('gameover', {
+						result: r
+					})
+					room.member.forEach(each => r.forEach(e => {
+						if (each.nick == e.nick) each.score = e.score
+					}))
+					io.sockets.in(roomid).emit('renew', {
+						roommsg
+					})
 				})
-				room.member.forEach(each => r.forEach(e => {if(each.nick==e.nick)each.score = e.score}))
-				io.sockets.in(roomid).emit('renew', {
-					roommsg
-				})
-			})
 		}
 	})
 	socket.on('jiaodizhu', ({

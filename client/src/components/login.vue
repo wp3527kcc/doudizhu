@@ -38,6 +38,8 @@ export default {
   flex-direction: column;
   width: 400px;
   align-items: center;
+  padding: 40px;
+  background: lightseagreen;
   input {
     margin: 10px 0;
     width: 90%;
