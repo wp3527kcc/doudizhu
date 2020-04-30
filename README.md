@@ -16,7 +16,7 @@
 
 1.  cd client&npm install&npm run dev
 2.  cd server&npm install&node app
-3.  使用浏览器打开三个http://localhost:8000后进行登陆操作，创建房间或进入房间后即可开始游戏
+3.  使用浏览器打开三个http://localhost:8000 后进行登陆操作，创建房间或进入房间后即可开始游戏
 
 #### 参与贡献
 
