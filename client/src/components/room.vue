@@ -127,8 +127,8 @@
             </article>
             <footer>
               <button @click="toggleChat">
-                <span class="iconfont" :class="{'icon-upward':iscollapse,'icon-down':!iscollapse}"></span>
-                <aside>3</aside>
+                <span class="iconfont" :class="[ iscollapse ? 'icon-upward' : 'icon-down' ]"></span>
+                <aside v-if='message'>{{message}}</aside>
               </button>
               <input type="text" v-model="inputcontent" />
               <button @click="commit">
@@ -190,7 +190,8 @@ export default {
       overflag: Boolean,
       round: Number,
       baseValue: Number,
-      iscollapse: true
+      iscollapse: true,
+      message: 0
     };
   },
   computed: {
@@ -209,9 +210,9 @@ export default {
     }, //round 0 1 2,
     showtop: function() {
       if (
-        this.left.king == undefined &&
-        this.right.king == undefined &&
-        this.bottom.king == undefined
+        !this.left.king &&
+        !this.right.king &&
+        !this.bottom.king 
       )
         return [
           { column: 2, row: 4 },
@@ -224,7 +225,9 @@ export default {
   mounted() {},
   watch: {
     Chat_Record:function(newValue, oldValue){
-      console.log('change')
+      this.message += 1
+      if(!this.iscollapse)
+        this.message = 0
     },
     RoomMsg: function(newValue, oldValue) {
       let re = newValue.filter(each => each.roomid == this.current_roomid)[0];
@@ -328,7 +331,6 @@ export default {
       this.$socket.emit("chupai", {});
     },
     emit(flag) {
-      // console.log(flag)
       this.$socket.emit("jiaodizhu", { flag });
     },
     getPosition(num) {
@@ -360,9 +362,9 @@ export default {
     },
     toggleChat() {
       this.iscollapse = !this.iscollapse;
+      this.message = 0
       const chatarea = this.$refs.chatarea;
       const vi = chatarea.style.visibility
-      console.log(vi)
       if(vi == 'visible' )
         {
           chatarea.style.visibility = 'hidden'
