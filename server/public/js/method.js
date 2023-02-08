@@ -5,7 +5,7 @@ const config = mysql.createConnection({
 	database: 'koko',
 	port: 3306,
 	charset: 'utf8',
-	password: 'Zkzhongke123'
+	password: '*****'
 })
 config.connect()
 
