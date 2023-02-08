@@ -1,9 +1,11 @@
-let mysql = require('mysql')
-let config = mysql.createConnection({
+const mysql = require('mysql')
+const config = mysql.createConnection({
 	host: 'localhost',
-	database: 'xscj',
+	user: "root",
+	database: 'koko',
 	port: 3306,
-	charset: 'utf8'
+	charset: 'utf8',
+	password: 'Zkzhongke123'
 })
 config.connect()
 

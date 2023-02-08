@@ -11,7 +11,7 @@ import 'mint-ui/lib/style.css'
 import moment from 'moment'
 import store from './store'
 import '../static/icon/iconfont.js'
-import '../static/icon/icon.css'
+import '../static/icon/iconfont.css'
 import {
   sockets,
   io

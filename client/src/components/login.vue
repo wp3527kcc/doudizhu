@@ -3,10 +3,19 @@
   <div class="contain">
     <h1>请登陆后选择房间</h1>
     <input type="text" placeholder="please input your nick" v-model="nick" />
-    <input type="password" placeholder="please input your password" v-model="password" />
-    <input type="button" value="登陆" @click="login({nick,password,router})" />
-    <div href class="info"><span class='iconfont icon-tixing'></span>
-    本系统登陆即注册</div>
+    <input
+      type="password"
+      placeholder="please input your password"
+      v-model="password"
+    />
+    <input
+      type="button"
+      value="登陆"
+      @click="login({ nick, password, router })"
+    />
+    <div href class="info">
+      <span class="iconfont icon-tixing"></span> 本系统登陆即注册
+    </div>
   </div>
 </template>
 
@@ -18,19 +27,19 @@ export default {
     return {
       nick: "",
       password: "",
-      router: {}
+      router: {},
     };
   },
   mounted() {
     this.router = this.$router;
   },
   methods: {
-    ...mapActions(["login"])
-  }
+    ...mapActions(["login"]),
+  },
 };
 </script>
 
-<style lang = 'scss' scoped>
+<style scoped>
 .contain {
   margin: 100px auto;
   text-align: center;

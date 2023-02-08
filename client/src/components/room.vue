@@ -383,7 +383,7 @@ export default {
   components: { clock }
 };
 </script>
-<style lang='scss' scoped>
+<style scoped>
 .rootContain {
   height: 100vh;
   width: 100vw;
