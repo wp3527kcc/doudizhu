@@ -1,24 +1,31 @@
 <template>
   <div class="contain">
     <!-- <h2>请选择或创建一个房间以开始游戏</h2> -->
-    <p data-font="请选择或创建一个房间以开始游戏" class="spotlight">请选择或创建一个房间以开始游戏</p>
+    <p data-font="请选择或创建一个房间以开始游戏" class="spotlight">
+      请选择或创建一个房间以开始游戏
+    </p>
     <div class="tableContain" v-if="RoomMsg.length">
       <div
         class="table"
-        v-for="(each,index) in RoomMsg"
+        v-for="(each, index) in RoomMsg"
         :key="index"
         @click="comeRoom(each.roomid)"
       >
-        <p>{{each.roomid}}号房间</p>
-        <p>{{each.member.length}}/3</p>
-        <span v-if="each.member.length==3">此房间已满</span>
+        <p>{{ each.roomid }}号房间</p>
+        <p>{{ each.member.length }}/3</p>
+        <span v-if="each.member.length == 3">此房间已满</span>
         <span v-else>点击进入此房间</span>
       </div>
     </div>
     <div v-else>
       <h1>当前无房间，请创建</h1>
     </div>
-    <input type="text" v-model="roomid" class="createRoom" placeholder="请输入您想创建的房间号" />
+    <input
+      type="text"
+      v-model="roomid"
+      class="createRoom"
+      placeholder="请输入您想创建的房间号"
+    />
     <button @click="createRoom">创建新房间</button>
   </div>
 </template>
@@ -28,11 +35,11 @@ import store from "../store";
 export default {
   data() {
     return {
-      roomid: "1"
+      roomid: "1",
     };
   },
   computed: {
-    ...mapState(["RoomMsg", "current_nick", "current_roomid"])
+    ...mapState(["RoomMsg", "current_nick", "current_roomid"]),
   },
   methods: {
     comeRoom(id) {
@@ -42,11 +49,11 @@ export default {
     createRoom() {
       this.$socket.emit("create", { nick: this.current_nick, id: this.roomid });
       this.$router.push("/room");
-    }
+    },
   },
   mounted() {
     this.$socket.emit("report", { nick: this.current_nick });
-  }
+  },
 };
 </script>
 <style scoped>
@@ -90,9 +97,9 @@ export default {
       span {
         font-size: 20px;
       }
-      &:hover{
-          color: #222;
-          background: silver;
+      &:hover {
+        color: #222;
+        background: silver;
       }
     }
     margin: 20px;

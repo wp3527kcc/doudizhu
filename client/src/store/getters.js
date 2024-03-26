@@ -1,5 +1,5 @@
-export default{
-    getRoomMsg(){
-        return 0
-    }
-}
+export default {
+  getRoomMsg() {
+    return 0;
+  },
+};

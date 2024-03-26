@@ -20,8 +20,7 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {

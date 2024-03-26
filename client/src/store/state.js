@@ -1,9 +1,8 @@
-
-      export default{
-            RoomMsg:Array,
-            current_nick:String,
-            current_roomid:String,
-            current_RoomMsg:Array,
-            Chat_Record:[],
-            over_msg: Array
-        }
+export default {
+  RoomMsg: [],
+  current_nick: "",
+  current_roomid: "",
+  current_RoomMsg: [],
+  Chat_Record: [],
+  over_msg: [],
+};
