@@ -14,8 +14,9 @@
 
 #### 使用说明
 
-1.  cd client&npm install&npm run dev
-2.  cd server&npm install&node app
+1.  使用server/demo.sql建表，修改 server/public/js/method.js 中 mysql.createConnection相关配置
+2.  cd client & npm install & npm run dev
+2.  cd server & npm install & node app.js
 3.  使用浏览器打开三个http://localhost:8000 后进行登陆操作，创建房间或进入房间后即可开始游戏
 
 #### 参与贡献
@@ -24,8 +25,4 @@
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
-5.  我老婆写的代码
-`
-console.log('老公真帅！')
-`
 

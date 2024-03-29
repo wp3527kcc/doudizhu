@@ -1,16 +1,22 @@
 const mysql = require('mysql')
-const config = mysql.createConnection({
+const connection = mysql.createConnection({
 	host: 'localhost',
-	user: "root",
-	database: 'koko',
+	user: "koko",
+	database: 'demo1',
 	port: 3306,
 	charset: 'utf8',
-	password: '*****'
+	password: '12345678'
 })
-config.connect()
+connection.connect((err) => {
+	if(err){
+		console.log(err, '---')
+		return 
+	}
+	console.log('link success')
+})
 
 function query(sql, callback) {
-	config.query(sql, (error, results) => {
+	connection.query(sql, (error, results) => {
 		if (error) callback(error, null)
 		callback(null, results)
 	})
@@ -37,7 +43,7 @@ exports.shuffle = function () {
 }
 
 exports.query = function (sql, callback) {
-	config.query(sql, (error, results) => {
+	connection.query(sql, (error, results) => {
 		if (error) callback(error, null);
 		else callback(null, results)
 	})
