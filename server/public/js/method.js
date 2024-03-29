@@ -8,9 +8,9 @@ const connection = mysql.createConnection({
 	password: '12345678'
 })
 connection.connect((err) => {
-	if(err){
+	if (err) {
 		console.log(err, '---')
-		return 
+		return
 	}
 	console.log('link success')
 })
@@ -62,7 +62,7 @@ exports.db = function (sql) {
 		}
 	)
 }
- let n = function (obj) {
+let n = function (obj) {
 	let index
 	obj.forEach((each, i) => {
 		if (each.flag) {
@@ -83,8 +83,8 @@ exports.next = function (obj, arr) {
 		}
 	})
 	index = (index + 1) % 3
-	if (arr && !arr[index]) 
-			index = (index + 1) % 3
+	if (arr && !arr[index])
+		index = (index + 1) % 3
 	obj[index].flag = true
 	obj[index].standby = []
 }

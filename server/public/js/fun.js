@@ -14,181 +14,181 @@ function judgement(arr) {
             return {
                 flag: true, value: arr[0], type: 'SINGLE'
             }
-            case 2:
-                if (arr[0] == 16 && arr[1] == 17)
-                    return {
-                        type: 'BOOM',
-                        flag: true,
-                        value: 100
-                    }
-                if (new Set(arr).size === 1)
-                    return {
-                        type: 'DOUBLE',
-                        flag: true,
-                        value: arr[0]
-                    }
+        case 2:
+            if (arr[0] == 16 && arr[1] == 17)
                 return {
-                    flag: false
+                    type: 'BOOM',
+                    flag: true,
+                    value: 100
                 }
-                case 3:
-                    if (new Set(arr).size === 1)
-                        return {
-                            type: 'TRIPLE',
-                            flag: true,
-                            value: arr[0]
-                        }
-                    return {
-                        flag: false
-                    }
-                    case 4:
-                        if (new Set(arr).size === 1)
-                            return {
-                                type: 'BOOM',
-                                flag: true,
-                                value: arr[0]
-                            }
-                        if (is3p1(arr).flag)
-                            return is3p1(arr)
-                        return {
-                            flag: false
-                        }
-                        case 5:
-                            if (isSerial(arr).flag)
-                                return isSerial(arr)
+            if (new Set(arr).size === 1)
+                return {
+                    type: 'DOUBLE',
+                    flag: true,
+                    value: arr[0]
+                }
+            return {
+                flag: false
+            }
+        case 3:
+            if (new Set(arr).size === 1)
+                return {
+                    type: 'TRIPLE',
+                    flag: true,
+                    value: arr[0]
+                }
+            return {
+                flag: false
+            }
+        case 4:
+            if (new Set(arr).size === 1)
+                return {
+                    type: 'BOOM',
+                    flag: true,
+                    value: arr[0]
+                }
+            if (is3p1(arr).flag)
+                return is3p1(arr)
+            return {
+                flag: false
+            }
+        case 5:
+            if (isSerial(arr).flag)
+                return isSerial(arr)
 
-                            if (is3p2(arr).flag)
-                                return is3p2(arr)
-                        case 6: //AAABBB AABBCC ABCDEF AAAABC AAAABB
-                            result1 = MultiTriple(arr),
-                                result3 = EvenPair(arr),
-                                result2 = isSerial(arr),
-                                result4 = is4p2(arr)
-                            if (result1.flag)
-                                return result1
-                            if (result2.flag)
-                                return result2
-                            if (result3.flag)
-                                return result3
-                            if (result4.flag)
-                                return result4
-                            return {
-                                flag: false
-                            }
-                            case 7:
-                                result = isSerial(arr)
-                                if (result)
-                                    return result
-                                return {
-                                    flag: false
-                                }
-                                case 8:
-                                    result1 = MultiTriple(arr),
-                                        result2 = isSerial(arr),
-                                        result3 = EvenPair(arr),
-                                        result4 = is4p2(arr)
-                                    if (result1.flag)
-                                        return result1
-                                    if (result2.flag)
-                                        return result2
-                                    if (result3.flag)
-                                        return result3
-                                    if (result4.flag)
-                                        return result4
+            if (is3p2(arr).flag)
+                return is3p2(arr)
+        case 6: //AAABBB AABBCC ABCDEF AAAABC AAAABB
+            result1 = MultiTriple(arr),
+                result3 = EvenPair(arr),
+                result2 = isSerial(arr),
+                result4 = is4p2(arr)
+            if (result1.flag)
+                return result1
+            if (result2.flag)
+                return result2
+            if (result3.flag)
+                return result3
+            if (result4.flag)
+                return result4
+            return {
+                flag: false
+            }
+        case 7:
+            result = isSerial(arr)
+            if (result)
+                return result
+            return {
+                flag: false
+            }
+        case 8:
+            result1 = MultiTriple(arr),
+                result2 = isSerial(arr),
+                result3 = EvenPair(arr),
+                result4 = is4p2(arr)
+            if (result1.flag)
+                return result1
+            if (result2.flag)
+                return result2
+            if (result3.flag)
+                return result3
+            if (result4.flag)
+                return result4
 
-                                    return {
-                                        flag: false
-                                    }
-                                    case 9:
-                                        result1 = MultiTriple(arr)
-                                        if (result1.flag)
-                                            return result1
-                                        result2 = isSerial(arr)
-                                        if (result2.flag)
-                                            return result2
-                                        return {
-                                            flag: false
-                                        }
-                                        case 10:
-                                            result1 = MultiTriple(arr)
-                                            if (result1.flag)
-                                                return result1
-                                            result2 = isSerial(arr)
-                                            if (result2.flag)
-                                                return result2
-                                            result3 = EvenPair(arr)
-                                            if (result3.flag)
-                                                return result3
-                                            return {
-                                                flag: false
-                                            }
-                                            case 11:
-                                                result = isSerial(arr)
-                                                if (result.flag)
-                                                    return result
-                                                return {
-                                                    flag: false
-                                                }
-                                                case 12:
-                                                    result1 = MultiTriple(arr)
-                                                    if (result1.flag)
-                                                        return result1
-                                                    result2 = EvenPair(arr)
-                                                    if (result2.flag)
-                                                        return result2
-                                                    result3 = isSerial(arr)
-                                                    if (result3.flag)
-                                                        return result3
-                                                    return {
-                                                        flag: false
-                                                    }
-                                                    case 14:
-                                                        result = EvenPair(arr)
-                                                        if (result.flag)
-                                                            return result
-                                                        return {
-                                                            flag: false
-                                                        }
-                                                        case 15:
-                                                            result = MultiTriple(arr) //aaabbbcccdddeee aaabbbcccddd
-                                                            if (result.flag)
-                                                                return result
-                                                            return {
-                                                                flag: false
-                                                            }
-                                                            case 16:
-                                                                result1 = MultiTriple(arr)
-                                                                if (result1.flag)
-                                                                    return result1
-                                                                result2 = EvenPair(arr)
-                                                                if (result2.flag)
-                                                                    return result2
-                                                                return {
-                                                                    flag: false
-                                                                }
-                                                                case 18:
-                                                                    result1 = MultiTriple(arr)
-                                                                    if (result1.flag)
-                                                                        return result1
-                                                                    result2 = EvenPair(arr)
-                                                                    if (result2.flag)
-                                                                        return result2
-                                                                    return {
-                                                                        flag: false
-                                                                    }
-                                                                    case 20:
-                                                                        result1 = MultiTriple(arr)
-                                                                        if (result1.flag)
-                                                                            return result1
-                                                                        result2 = EvenPair(arr)
-                                                                        if (result2.flag)
-                                                                            return result2
-                                                                        return {
-                                                                            flag: false
-                                                                        }
-                                                                        default:
-                                                                            return {
-                                                                                flag: false
-                                                                            }
+            return {
+                flag: false
+            }
+        case 9:
+            result1 = MultiTriple(arr)
+            if (result1.flag)
+                return result1
+            result2 = isSerial(arr)
+            if (result2.flag)
+                return result2
+            return {
+                flag: false
+            }
+        case 10:
+            result1 = MultiTriple(arr)
+            if (result1.flag)
+                return result1
+            result2 = isSerial(arr)
+            if (result2.flag)
+                return result2
+            result3 = EvenPair(arr)
+            if (result3.flag)
+                return result3
+            return {
+                flag: false
+            }
+        case 11:
+            result = isSerial(arr)
+            if (result.flag)
+                return result
+            return {
+                flag: false
+            }
+        case 12:
+            result1 = MultiTriple(arr)
+            if (result1.flag)
+                return result1
+            result2 = EvenPair(arr)
+            if (result2.flag)
+                return result2
+            result3 = isSerial(arr)
+            if (result3.flag)
+                return result3
+            return {
+                flag: false
+            }
+        case 14:
+            result = EvenPair(arr)
+            if (result.flag)
+                return result
+            return {
+                flag: false
+            }
+        case 15:
+            result = MultiTriple(arr) //aaabbbcccdddeee aaabbbcccddd
+            if (result.flag)
+                return result
+            return {
+                flag: false
+            }
+        case 16:
+            result1 = MultiTriple(arr)
+            if (result1.flag)
+                return result1
+            result2 = EvenPair(arr)
+            if (result2.flag)
+                return result2
+            return {
+                flag: false
+            }
+        case 18:
+            result1 = MultiTriple(arr)
+            if (result1.flag)
+                return result1
+            result2 = EvenPair(arr)
+            if (result2.flag)
+                return result2
+            return {
+                flag: false
+            }
+        case 20:
+            result1 = MultiTriple(arr)
+            if (result1.flag)
+                return result1
+            result2 = EvenPair(arr)
+            if (result2.flag)
+                return result2
+            return {
+                flag: false
+            }
+        default:
+            return {
+                flag: false
+            }
     }
 }
 
@@ -355,22 +355,21 @@ function is4p2(arr) {
         flag: false
     }
 }
-function compare(a1,a2){
+function compare(a1, a2) {
     const r1 = judgement(a2)
     if (!r1.flag)
         return false
-    if (!a1.length) 
+    if (!a1.length)
         return true
     const r2 = judgement(a1)
-    if(r1.type == r2.type && r1.length==r2.length)
-        {
-            if(r1.value>r2.value)
-                return true
-            return false
-        }
-    if(r1.type == 'BOOM')
-        return true
+    if (r1.type == r2.type && r1.length == r2.length) {
+        if (r1.value > r2.value)
+            return true
         return false
-}   
+    }
+    if (r1.type == 'BOOM')
+        return true
+    return false
+}
 exports.compare = compare
 exports.judgement = judgement

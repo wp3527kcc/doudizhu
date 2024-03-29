@@ -12,6 +12,10 @@
 
 1. git clone https://gitee.com/wp3527kcc/graduation_project
 
+#### 环境要求
+1. nodejs环境
+2. mysql
+
 #### 使用说明
 
 1.  使用server/demo.sql建表，修改 server/public/js/method.js 中 mysql.createConnection相关配置
