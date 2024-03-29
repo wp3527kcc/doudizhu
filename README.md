@@ -10,7 +10,8 @@
 
 #### 安装教程
 
-1. git clone https://gitee.com/wp3527kcc/graduation_project
+1. git clone https://github.com/wp3527kcc/doudizhu
+2. git clone https://gitee.com/wp3527kcc/graduation_project
 
 #### 环境要求
 1. nodejs环境
